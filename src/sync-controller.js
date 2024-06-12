@@ -84,48 +84,6 @@ export const syncPointStrategies = [
       return syncPoint;
     }
   },
-  // Stategy "Segment": We have a known time mapping for a timeline and a
-  //                    segment in the current timeline with timing data
-  {
-    name: 'Segment',
-    run: (syncController, playlist, duration, currentTimeline, currentTime) => {
-      let syncPoint = null;
-      let lastDistance = null;
-
-      currentTime = currentTime || 0;
-      const partsAndSegments = getPartsAndSegments(playlist);
-
-      for (let i = 0; i < partsAndSegments.length; i++) {
-        // start from the end and loop backwards for live
-        // or start from the front and loop forwards for non-live
-        const index = (playlist.endList || currentTime === 0) ? i : partsAndSegments.length - (i + 1);
-        const partAndSegment = partsAndSegments[index];
-        const segment = partAndSegment.segment;
-        const start = partAndSegment.part && partAndSegment.part.start || segment && segment.start;
-
-        if (segment.timeline === currentTimeline && typeof start !== 'undefined') {
-          const distance = Math.abs(currentTime - start);
-
-          // Once the distance begins to increase, we have passed
-          // currentTime and can stop looking for better candidates
-          if (lastDistance !== null && lastDistance < distance) {
-            break;
-          }
-
-          if (!syncPoint || lastDistance === null || lastDistance >= distance) {
-            lastDistance = distance;
-            syncPoint = {
-              time: start,
-              segmentIndex: partAndSegment.segmentIndex,
-              partIndex: partAndSegment.partIndex
-            };
-          }
-
-        }
-      }
-      return syncPoint;
-    }
-  },
   // Stategy "Discontinuity": We have a discontinuity with a known
   //                          display-time
   {
