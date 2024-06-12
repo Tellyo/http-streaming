@@ -4070,7 +4070,7 @@ var getWorkerString = function getWorkerString(fn) {
   return fn.toString().replace(/^function.+?{/, '').slice(0, -1);
 };
 
-/* rollup-plugin-worker-factory start for worker!C:\Users\PawełJaśpiński\Desktop\http-streaming\src\transmuxer-worker.js */
+/* rollup-plugin-worker-factory start for worker!C:\Users\pjaspinski\Desktop\tellyo\http-streaming\src\transmuxer-worker.js */
 var workerCode$1 = transform(getWorkerString(function () {
   /**
    * mux.js
@@ -12873,7 +12873,7 @@ var workerCode$1 = transform(getWorkerString(function () {
   };
 }));
 var TransmuxWorker = factory(workerCode$1);
-/* rollup-plugin-worker-factory end for worker!C:\Users\PawełJaśpiński\Desktop\http-streaming\src\transmuxer-worker.js */
+/* rollup-plugin-worker-factory end for worker!C:\Users\pjaspinski\Desktop\tellyo\http-streaming\src\transmuxer-worker.js */
 
 var handleData_ = function handleData_(event, transmuxedData, callback) {
   var _event$data$segment = event.data.segment,
@@ -20064,45 +20064,6 @@ var syncPointStrategies = [// Stategy "VOD": Handle the VOD-case where the sync-
 
     return syncPoint;
   }
-}, // Stategy "Segment": We have a known time mapping for a timeline and a
-//                    segment in the current timeline with timing data
-{
-  name: 'Segment',
-  run: function run(syncController, playlist, duration, currentTimeline, currentTime) {
-    var syncPoint = null;
-    var lastDistance = null;
-    currentTime = currentTime || 0;
-    var partsAndSegments = getPartsAndSegments(playlist);
-
-    for (var i = 0; i < partsAndSegments.length; i++) {
-      // start from the end and loop backwards for live
-      // or start from the front and loop forwards for non-live
-      var index = playlist.endList || currentTime === 0 ? i : partsAndSegments.length - (i + 1);
-      var partAndSegment = partsAndSegments[index];
-      var segment = partAndSegment.segment;
-      var start = partAndSegment.part && partAndSegment.part.start || segment && segment.start;
-
-      if (segment.timeline === currentTimeline && typeof start !== 'undefined') {
-        var distance = Math.abs(currentTime - start); // Once the distance begins to increase, we have passed
-        // currentTime and can stop looking for better candidates
-
-        if (lastDistance !== null && lastDistance < distance) {
-          break;
-        }
-
-        if (!syncPoint || lastDistance === null || lastDistance >= distance) {
-          lastDistance = distance;
-          syncPoint = {
-            time: start,
-            segmentIndex: partAndSegment.segmentIndex,
-            partIndex: partAndSegment.partIndex
-          };
-        }
-      }
-    }
-
-    return syncPoint;
-  }
 }, // Stategy "Discontinuity": We have a discontinuity with a known
 //                          display-time
 {
@@ -20632,7 +20593,7 @@ var TimelineChangeController = /*#__PURE__*/function (_videojs$EventTarget) {
   return TimelineChangeController;
 }(videojs.EventTarget);
 
-/* rollup-plugin-worker-factory start for worker!C:\Users\PawełJaśpiński\Desktop\http-streaming\src\decrypter-worker.js */
+/* rollup-plugin-worker-factory start for worker!C:\Users\pjaspinski\Desktop\tellyo\http-streaming\src\decrypter-worker.js */
 var workerCode = transform(getWorkerString(function () {
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -21349,7 +21310,7 @@ var workerCode = transform(getWorkerString(function () {
   };
 }));
 var Decrypter = factory(workerCode);
-/* rollup-plugin-worker-factory end for worker!C:\Users\PawełJaśpiński\Desktop\http-streaming\src\decrypter-worker.js */
+/* rollup-plugin-worker-factory end for worker!C:\Users\pjaspinski\Desktop\tellyo\http-streaming\src\decrypter-worker.js */
 
 /**
  * Convert the properties of an HLS track into an audioTrackKind.
